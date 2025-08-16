@@ -6,5 +6,6 @@ edition = "2024"
 [dependencies]
 poem = "3.1.12"
 poem-openapi = { version = "5.1.16", features = ["swagger-ui"] }
+rumqttc = "0.24.0"
 tokio = { version = "1.47.1", features = ["full"] }
 

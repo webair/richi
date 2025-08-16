@@ -13,3 +13,8 @@ docker compose up -d --force-recreate --build --remove-orphans
 ```sh
 docker exec -it richi_remote_door-mqtt-broker-1 mosquitto_passwd -c /mosquitto/config/password_file richi_lock
 ```
+
+### Publish test Message
+```sh
+ docker exec -it richi-mosquitto mosquitto_pub -h localhost -t "test/topic" -m "Hello MQTT!" -u "richi_lock" -P "password"
+```
