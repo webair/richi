@@ -1,0 +1,10 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2.0.22-openssl
+    container_name: richi-mosquitto
+    ports:
+      - "1883:1833"
+      - "8080:8080"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+    restart: unless-stopped
