@@ -1,7 +1,7 @@
 services:
-  mosquitto:
+  mqtt-broker:
     image: eclipse-mosquitto:2.0.22-openssl
-    container_name: richi-mosquitto
+    container_name: mqtt-broker
     ports:
       - "1883:1883"
     volumes:
