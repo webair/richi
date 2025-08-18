@@ -1,4 +1,2 @@
-.idea
-
 # mosquitto container
 /mosquitto/config/password_file

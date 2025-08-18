@@ -4,9 +4,7 @@ use poem::{Route, Server};
 use poem_openapi::payload::PlainText;
 use poem_openapi::{ApiResponse, OpenApi, OpenApiService};
 use rumqttc::Event::Incoming;
-use rumqttc::{
-    AsyncClient, ClientError, ConnectionError, MqttOptions, Packet, QoS,
-};
+use rumqttc::{AsyncClient, ClientError, ConnectionError, MqttOptions, Packet, QoS};
 use std::time::Duration;
 
 #[derive(ApiResponse)]
