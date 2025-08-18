@@ -2,6 +2,14 @@
 
 Sim Sala bim, Türe vom richi öffne dich!
 
+## Setup development environment
+
+Create .env file in the project root with following content
+```.env
+MQTT_BROKER_USERNAME: username
+MQTT_BROKER_PASSWORD: password
+```
+
 ## Notes
 
 ### Start docker containers

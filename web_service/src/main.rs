@@ -57,7 +57,7 @@ impl From<ConnectionError> for PublishError {
 async fn publish_open_lock_message() -> Result<(), PublishError> {
     let mut mqtt_options = MqttOptions::new("", "0.0.0.0", 1883);
     mqtt_options.set_keep_alive(Duration::from_secs(5));
-    mqtt_options.set_credentials("richi_lock", "password");
+    mqtt_options.set_credentials("username", "password");
     let (client, mut event_loop) = AsyncClient::new(mqtt_options, 10);
     client
         .publish("lock/open", QoS::ExactlyOnce, false, vec![1])
