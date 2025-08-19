@@ -56,7 +56,7 @@ impl From<ConnectionError> for PublishError {
 }
 
 async fn publish_open_lock_message() -> Result<(), PublishError> {
-    let mut mqtt_options = MqttOptions::new("", "0.0.0.0", 1883);
+    let mut mqtt_options = MqttOptions::new("", &CONFIG.mqtt_broker_host, 1883);
     mqtt_options.set_keep_alive(Duration::from_secs(5));
     mqtt_options.set_credentials(&CONFIG.mqtt_broker_username, &CONFIG.mqtt_broker_password);
     let (client, mut event_loop) = AsyncClient::new(mqtt_options, 10);
@@ -72,13 +72,17 @@ async fn publish_open_lock_message() -> Result<(), PublishError> {
 }
 
 struct Config {
+    web_service_host: String,
+    mqtt_broker_host: String,
     mqtt_broker_username: String,
-    mqtt_broker_password: String,
+    mqtt_broker_password: String
 }
 
 impl Config {
     fn try_new() -> Result<Self, String> {
         Ok(Self {
+            web_service_host: env_var("WEB_SERVICE_HOST")?,
+            mqtt_broker_host: env_var("MQTT_BROKER_HOST")?,
             mqtt_broker_username: env_var("MQTT_BROKER_USERNAME")?,
             mqtt_broker_password: env_var("MQTT_BROKER_PASSWORD")?,
         })
@@ -93,9 +97,8 @@ static CONFIG: Lazy<Config> = Lazy::new(|| Config::try_new().unwrap());
 
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {
-    let _ = &*CONFIG;
     let api_service = OpenApiService::new(Api, "Richi Remote Door Web Service", "1.0")
-        .server("http://localhost:3000/api");
+        .server(format!("http://{}/api", &CONFIG.web_service_host));
     let ui = api_service.swagger_ui();
     let app = Route::new().nest("/", ui).nest("/api", api_service);
     Server::new(TcpListener::bind("0.0.0.0:3000"))

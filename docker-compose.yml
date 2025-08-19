@@ -1,7 +1,7 @@
 services:
   mqtt-broker:
+    build: ./mqtt_broker
     container_name: mqtt-broker
-    build: ./mqtt-broker
     environment:
       USERNAME: ${MQTT_BROKER_USERNAME}
       PASSWORD: ${MQTT_BROKER_PASSWORD}
@@ -12,6 +12,8 @@ services:
     build: ./web_service
     container_name: web-service
     environment:
+      WEB_SERVICE_HOST: ${WEB_SERVICE_HOST}
+      MQTT_BROKER_HOST: mqtt-broker
       MQTT_BROKER_USERNAME: ${MQTT_BROKER_USERNAME}
       MQTT_BROKER_PASSWORD: ${MQTT_BROKER_PASSWORD}
     ports:

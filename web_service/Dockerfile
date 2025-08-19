@@ -14,6 +14,8 @@ RUN cargo build --release
 
 FROM debian:bookworm-slim
 
+ENV WEB_SERVICE_HOST="<webservice host>"
+ENV MQTT_BROKER_HOST="<mqtt broker host>"
 ENV MQTT_BROKER_USERNAME="<mqtt broker username>"
 ENV MQTT_BROKER_PASSWORD="<mqtt broker password>"
 
