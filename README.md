@@ -2,27 +2,30 @@
 
 Sim Sala bim, Türe vom richi öffne dich!
 
-## Setup development environment
+## Setup Development Environment
 
-Create .env file in the project root with following content
-```.env
-MQTT_BROKER_USERNAME: username
-MQTT_BROKER_PASSWORD: password
+Copy the example environment file
+```sh
+cp .env.example .env
+```
+Open the newly created .env file in a text editor and fill in the required values.
+
+## Run Locally
+
+Web Service
+```sh
+cd ./web_service
+direnv exec ../. cargo run
 ```
 
 ## Notes
 
-### Start docker containers
+### Start Docker Containers
 ```sh
-docker compose up -d --force-recreate --build --remove-orphans
+docker compose up -d --build --remove-orphans
 ```
 
-### Create mosquitto user and password
+### Publish Test Message
 ```sh
-docker exec -it richi_remote_door-mqtt-broker-1 mosquitto_passwd -c /mosquitto/config/password_file richi_lock
-```
-
-### Publish test Message
-```sh
- docker exec -it richi-mosquitto mosquitto_pub -h localhost -t "test/topic" -m "Hello MQTT!" -u "richi_lock" -P "password"
+ docker exec -it  mosquitto_pub -h localhost -t "test/topic" -m "Hello MQTT!" -u "username" -P "password"
 ```
