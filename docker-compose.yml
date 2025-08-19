@@ -8,3 +8,12 @@ services:
     ports:
       - "1883:1883"
     restart: no
+  web-service:
+    build: ./web_service
+    container_name: web-service
+    environment:
+      MQTT_BROKER_USERNAME: ${MQTT_BROKER_USERNAME}
+      MQTT_BROKER_PASSWORD: ${MQTT_BROKER_PASSWORD}
+    ports:
+      - "3000:3000"
+    restart: no
