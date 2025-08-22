@@ -1,0 +1,3 @@
+{$HOST} {
+    reverse_proxy {$UPSTREAM_WEB_SERVICE}
+}
