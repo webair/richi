@@ -18,6 +18,17 @@ cd ./web_service
 direnv exec ../. cargo run
 ```
 
+Docker
+```sh
+docker compose -f docker-compose.yml -f docker-compose-dev.yml up -d --build --remove-orphans
+```
+
+## Deploy to remote server
+Build and publish docker images
+```sh
+./publish.sh
+```
+
 ## Notes
 
 ### Start Docker Containers

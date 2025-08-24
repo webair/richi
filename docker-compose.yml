@@ -1,7 +1,9 @@
 services:
   revers-proxy:
-    build: ./reverse_proxy
-    container_name: reverse-proxy
+    image: webair/richi-lock-reverse-proxy
+    container_name: richi-reverse-proxy
+    networks:
+      - richi-network
     environment:
       HOST: ${RICHI_HOST}
       UPSTREAM_WEB_SERVICE: web-service:3000
@@ -10,18 +12,23 @@ services:
     ports:
       - 80:80
       - 443:443
+    restart: unless-stopped
   mqtt-broker:
-    build: ./mqtt_broker
-    container_name: mqtt-broker
+    image: webair/richi-lock-mqtt-broker
+    container_name: richi-mqtt-broker
+    networks:
+      - richi-network
     environment:
       USERNAME: ${MQTT_BROKER_USERNAME}
       PASSWORD: ${MQTT_BROKER_PASSWORD}
     ports:
       - "1883:1883"
-    restart: no
+    restart: unless-stopped
   web-service:
-    build: ./web_service
-    container_name: web-service
+    image: webair/richi-lock-web-service
+    container_name: richi-web-service
+    networks:
+      - richi-network
     environment:
       WEB_SERVICE_HOST: ${RICHI_HOST}
       MQTT_BROKER_HOST: mqtt-broker
@@ -31,4 +38,8 @@ services:
       - mqtt-broker
     ports:
       - "3000:3000"
-    restart: no
+    restart: unless-stopped
+
+networks:
+  richi-network:
+    driver: bridge
