@@ -8,6 +8,9 @@ use rumqttc::Event::Incoming;
 use rumqttc::{AsyncClient, ClientError, ConnectionError, MqttOptions, Packet, QoS};
 use std::{env, time::Duration};
 
+const LOCK_ACTION_TOPIC: &str = "lockAction";
+const LOCK_ACTION_UNLOCK: &str = "1";
+
 #[derive(ApiResponse)]
 enum OpenDoorResponse {
     #[oai(status = 200)]
@@ -61,8 +64,14 @@ async fn publish_open_lock_message() -> Result<(), PublishError> {
     mqtt_options.set_credentials(&CONFIG.mqtt_broker_username, &CONFIG.mqtt_broker_password);
     let (client, mut event_loop) = AsyncClient::new(mqtt_options, 10);
     client
-        .publish("lock/open", QoS::ExactlyOnce, false, vec![1])
+        .publish(
+            format!("nuki/{}/{}", &CONFIG.nuki_lock_id, LOCK_ACTION_TOPIC),
+            QoS::ExactlyOnce,
+            false,
+            LOCK_ACTION_UNLOCK,
+        )
         .await?;
+
     loop {
         if let Incoming(Packet::PubComp(_)) = event_loop.poll().await? {
             break;
@@ -75,7 +84,8 @@ struct Config {
     web_service_host: String,
     mqtt_broker_host: String,
     mqtt_broker_username: String,
-    mqtt_broker_password: String
+    mqtt_broker_password: String,
+    nuki_lock_id: String,
 }
 
 impl Config {
@@ -85,6 +95,7 @@ impl Config {
             mqtt_broker_host: env_var("MQTT_BROKER_HOST")?,
             mqtt_broker_username: env_var("MQTT_BROKER_USERNAME")?,
             mqtt_broker_password: env_var("MQTT_BROKER_PASSWORD")?,
+            nuki_lock_id: env_var("NUKI_LOCK_ID")?,
         })
     }
 }
