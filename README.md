@@ -15,7 +15,9 @@ Open the newly created .env file in a text editor and fill in the required value
 Web Service
 ```sh
 cd ./web_service
-direnv exec ../. cargo run
+WEB_SERVICE_HOST="http://localhost" MQTT_BROKER_USERNAME="username" \
+MQTT_BROKER_PASSWORD="password" MQTT_BROKER_HOST="localhost" NUKI_LOCK_ID="474D4D1F" \
+cargo run
 ```
 
 Docker
@@ -29,14 +31,7 @@ Build and publish docker images
 ./publish.sh
 ```
 
-## Notes
-
-### Start Docker Containers
+### TCP Proxy on Raspberry Pi
 ```sh
-docker compose up -d --build --remove-orphans
-```
-
-### Publish Test Message
-```sh
- docker exec -it  mosquitto_pub -h localhost -t "test/topic" -m "Hello MQTT!" -u "username" -P "password"
+socat TCP4-LISTEN:1883 TCP-CONNECT:<url>:1883
 ```
