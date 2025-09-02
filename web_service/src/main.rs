@@ -27,7 +27,7 @@ struct Api;
 
 #[OpenApi]
 impl Api {
-    #[oai(path = "/open_door", method = "post")]
+    #[oai(path = "/open-door", method = "post")]
     async fn open_door(&self) -> OpenDoorResponse {
         match publish_open_lock_message().await {
             Ok(()) => OpenDoorResponse::Ok(PlainText("Türe öffne dich...")),
