@@ -1,3 +1,5 @@
+import './shared/browser-reset.css'
+
 import { createApp } from 'vue'
 
 import App from './App.vue'
