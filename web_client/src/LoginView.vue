@@ -55,7 +55,7 @@ const onSubmitVerificationCode = async () => {
   } catch (e) {
     const error = alwaysError(e)
     state.value = {
-      type: 'enterPhoneNumberState',
+      type: 'verificationCodeState',
       error: error.message,
     }
   } finally {
