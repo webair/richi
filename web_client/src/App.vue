@@ -66,7 +66,7 @@ check().then(() =>
 <template>
   <h1>Richi</h1>
   <LoginView v-if="state.type === 'unauthenticatedState'" />
-  <OpenDoorView v-if="state.type === 'authenticatedState'" />
+  <OpenDoorView v-if="state.type === 'authenticatedState'" :session="state.session" />
   <p v-if="state.type === 'authErrorState'">
     Ein Fehler ist aufgetreten, bitte versuch es später nochmal
   </p>
