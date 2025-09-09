@@ -8,12 +8,13 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
+    "build": "vite build",
     "preview": "vite preview",
-    "build-only": "vite build",
     "type-check": "vue-tsc --build",
-    "lint": "eslint . --fix",
-    "format": "prettier --write src/"
+    "lint-check": "eslint .",
+    "lint-fix": "eslint . --fix",
+    "format": "prettier --write src/",
+    "verify": "run-p lint-check  type-check"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.0",
