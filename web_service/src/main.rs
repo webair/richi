@@ -1,4 +1,5 @@
 mod api;
+mod auth;
 mod mqtt;
 
 use once_cell::sync::Lazy;
