@@ -10,7 +10,7 @@ jwks = "0.4.0"
 once_cell = "1.21.3"
 poem = "3.1.12"
 poem-openapi = { version = "5.1.16", features = ["swagger-ui"] }
-reqwest = { version = "0.12.23", features = ["json", "rustls-tls"] }
+reqwest = { version = "0.12.23", default-features = false, features = ["json", "rustls-tls"] }
 rumqttc = "0.24.0"
 serde = "1.0.219"
 tokio = { version = "1.47.1", features = ["full"] }

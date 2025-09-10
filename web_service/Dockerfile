@@ -4,9 +4,9 @@ WORKDIR /app
 
 COPY Cargo.toml Cargo.lock ./
 RUN mkdir -p src && \
-    echo "fn main() {println!(\"dummy\");}" > src/main.rs && \
-    cargo build --release && \
-    rm -rf src
+    echo "fn main() {}" > src/main.rs && \
+    cargo check --release && \
+    rm src/main.rs
 
 COPY src ./src
 RUN cargo build --release
