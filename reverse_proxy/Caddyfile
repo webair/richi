@@ -1,3 +1,4 @@
 {$HOST} {
-    reverse_proxy {$UPSTREAM_WEB_SERVICE}
+    reverse_proxy /api/* {$UPSTREAM_WEB_SERVICE}
+    reverse_proxy {$UPSTREAM_WEB_CLIENT}
 }

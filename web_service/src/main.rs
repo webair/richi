@@ -38,8 +38,8 @@ static CONFIG: Lazy<Config> = Lazy::new(|| Config::try_new().unwrap());
 async fn main() -> Result<(), std::io::Error> {
     let api_service = OpenApiService::new(api::Api, "Richi Remote Door Web Service", "1.0")
         .server(format!("{}/api", &CONFIG.web_service_host));
-    let ui = api_service.swagger_ui();
-    let app = Route::new().nest("/", ui).nest("/api", api_service);
+    let docs = api_service.swagger_ui();
+    let app = Route::new().nest("/api", api_service).nest("api/docs", docs);
     Server::new(TcpListener::bind("0.0.0.0:3000"))
         .run(app)
         .await

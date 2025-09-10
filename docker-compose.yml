@@ -7,6 +7,7 @@ services:
     environment:
       HOST: ${RICHI_HOST}
       UPSTREAM_WEB_SERVICE: web-service:3000
+      UPSTREAM_WEB_CLIENT: web-client:80
     depends_on:
       - web-service
     ports:
@@ -37,8 +38,14 @@ services:
       NUKI_LOCK_ID: ${NUKI_LOCK_ID}
     depends_on:
       - mqtt-broker
-    ports:
-      - "3000:3000"
+    restart: unless-stopped
+  web-client:
+    image: webair/richi-lock-web-client:latest
+    container_name: richi-web-client
+    networks:
+      - richi-network
+    depends_on:
+      - web-service
     restart: unless-stopped
 
 networks:

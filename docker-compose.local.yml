@@ -8,3 +8,6 @@ services:
   web-service:
     build: ./web_service
     restart: no
+  web-client:
+    build: ./web_client
+    restart: no
