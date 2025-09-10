@@ -5,11 +5,11 @@ WORKDIR /app
 COPY Cargo.toml Cargo.lock ./
 RUN mkdir -p src && \
     echo "fn main() {}" > src/main.rs && \
-    cargo check --release && \
-    rm src/main.rs
+    cargo build --release --locked && \
+    rm -rf src
 
 COPY src ./src
-RUN cargo build --release
+RUN cargo build --release --locked
 
 FROM debian:bookworm-slim
 

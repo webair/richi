@@ -10,34 +10,12 @@ cp .env.example .env
 ```
 Open the newly created .env file in a text editor and fill in the required values.
 
-## Run Locally
-
-### Web Service
+## Run Dev environment
 ```sh
-# Start dependencies
-docker compose -f docker-compose.dev.yml up -d --build --remove-orphans
-
-# Run webservice
-cd ./web_service
-WEB_SERVICE_HOST="http://localhost:3000" MQTT_BROKER_USERNAME="username" \
-MQTT_BROKER_PASSWORD="password" MQTT_BROKER_HOST="localhost" NUKI_LOCK_ID="474D4D1F" \
-cargo run
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build --remove-orphans
 ```
 
-### Web Client
-Make sure Web Service is running
-```sh
-cd ./web_client
-npm run dev
-```
-
-### Full environment
-```sh
-docker compose -f docker-compose.yml -f docker-compose.local.yml up -d --build --remove-orphans
-```
-
-## Deploy to remote server
-Build and publish docker images
+## Build and publish docker images to hub.docer.com
 ```sh
 ./publish.sh
 ```

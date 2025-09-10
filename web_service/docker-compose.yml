@@ -1,0 +1,10 @@
+services:
+  mqtt-broker:
+    image: webair/richi-lock-mqtt-broker:latest
+    container_name: richi-mqtt-broker
+    environment:
+      USERNAME: username
+      PASSWORD: password
+    ports:
+      - "1883:1883"
+    restart: unless-stopped
