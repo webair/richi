@@ -1,3 +1,4 @@
 # mosquitto container
 /mosquitto/config/password_file
 /.env
+.scratches
