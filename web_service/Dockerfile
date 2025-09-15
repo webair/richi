@@ -20,8 +20,8 @@ ENV MQTT_BROKER_PASSWORD="<mqtt broker password>"
 
 WORKDIR /app
 
-COPY --from=builder /app/target/release/richi_remote_door_web_service .
+COPY --from=builder /app/target/release/richi_remote_lock_web_service .
 
 EXPOSE 3000
 
-CMD ["./richi_remote_door_web_service"]
+CMD ["./richi_remote_lock_web_service"]

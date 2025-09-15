@@ -1,6 +1,6 @@
-# Richi Remote Door
+# Richi Remote Lock
 
-Sim Sala bim, Türe vom richi öffne dich!
+Hokuspokus simsalabich, Schloss vom richi, öffne dich!
 
 ## Setup Development Environment
 

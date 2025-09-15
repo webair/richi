@@ -1,6 +1,6 @@
 services:
   mqtt-broker:
-    image: webair/richi-lock-mqtt-broker:latest
+    image: webair/richi-remote-lock-mqtt-broker:latest
     container_name: richi-mqtt-broker
     environment:
       USERNAME: username

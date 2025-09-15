@@ -1,4 +1,4 @@
-# Richi Lock Web Service
+# Richi Remote Lock Web Service
 
 ## Start dependencies
 ```sh

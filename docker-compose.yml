@@ -1,6 +1,6 @@
 services:
   revers-proxy:
-    image: webair/richi-lock-reverse-proxy:latest
+    image: webair/richi-remote-lock-reverse-proxy:latest
     container_name: richi-reverse-proxy
     networks:
       - richi-network
@@ -15,7 +15,7 @@ services:
       - 443:443
     restart: unless-stopped
   mqtt-broker:
-    image: webair/richi-lock-mqtt-broker:latest
+    image: webair/richi-remote-lock-mqtt-broker:latest
     container_name: richi-mqtt-broker
     networks:
       - richi-network
@@ -26,7 +26,7 @@ services:
       - "1883:1883"
     restart: unless-stopped
   web-service:
-    image: webair/richi-lock-web-service:latest
+    image: webair/richi-remote-lock-web-service:latest
     container_name: richi-web-service
     networks:
       - richi-network
@@ -40,7 +40,7 @@ services:
       - mqtt-broker
     restart: unless-stopped
   web-client:
-    image: webair/richi-lock-web-client:latest
+    image: webair/richi-remote-lock-web-client:latest
     container_name: richi-web-client
     networks:
       - richi-network

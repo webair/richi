@@ -11,7 +11,7 @@ use poem_openapi::OpenApiService;
 #[tokio::main]
 async fn main() -> Result<()> {
     config::init_config()?;
-    let api_service = OpenApiService::new(api::Api, "Richi Remote Door Web Service", "1.0")
+    let api_service = OpenApiService::new(api::Api, "Richi Remote Lock Web Service", "1.0")
         .server(format!("{}/api", config::config().web_service_host));
     let docs = api_service.swagger_ui();
     let app = Route::new()

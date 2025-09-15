@@ -1,4 +1,4 @@
-# Richi Remote Door Web Client
+# Richi Remote Lock Web Client
 
 ## Project Setup
 
