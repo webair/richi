@@ -2,3 +2,4 @@
 /mosquitto/config/password_file
 /.env
 .scratches
+.zed/
