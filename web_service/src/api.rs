@@ -20,6 +20,19 @@ enum OpenDoorResponse {
     ServiceUnavailable(PlainText<String>),
 }
 
+impl From<PublishError> for OpenDoorResponse {
+    fn from(error: PublishError) -> Self {
+        match error {
+            PublishError::ConnectionError(message) => {
+                OpenDoorResponse::ServiceUnavailable(PlainText(message))
+            }
+            PublishError::ClientError(message) => {
+                OpenDoorResponse::InternalServerError(PlainText(message))
+            }
+        }
+    }
+}
+
 #[derive(SecurityScheme)]
 #[oai(ty = "bearer", key_in = "header")]
 struct BearerTokenAuth(Bearer);
@@ -31,19 +44,14 @@ impl Api {
     #[oai(path = "/open-door", method = "post")]
     async fn open_door(&self, auth: BearerTokenAuth) -> OpenDoorResponse {
         let jwt_token = auth.0.token;
-        match claim_phone_number(jwt_token).await {
-            Ok(phone_number) => println!("{} opened lock", phone_number),
+        let phone_number = match claim_phone_number(jwt_token).await {
+            Ok(phone_number) => phone_number,
             Err(error) => return OpenDoorResponse::Unauthorized(PlainText(format!("{}", error))),
         };
-
-        match publish_open_lock_message().await {
-            Ok(()) => OpenDoorResponse::Ok(PlainText("Türe öffne dich...")),
-            Err(PublishError::ConnectionError(error_message)) => {
-                OpenDoorResponse::ServiceUnavailable(PlainText(error_message))
-            }
-            Err(PublishError::ClientError(error_message)) => {
-                OpenDoorResponse::InternalServerError(PlainText(error_message))
-            }
+        if let Err(e) = publish_open_lock_message().await {
+            return e.into();
         }
+        println!("Request to open lock from phone number {}", phone_number);
+        OpenDoorResponse::Ok(PlainText("Türe öffne dich..."))
     }
 }
