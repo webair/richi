@@ -39,5 +39,11 @@ export const useAsyncState = <T, Args extends unknown[] = []>(
     }
   }
 
-  return { state, execute }
+  const reset = () => {
+    if (state.value.type !== 'processing-state') {
+      state.value = { type: 'idle-state' }
+    }
+  }
+
+  return { state, execute, reset }
 }
