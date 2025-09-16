@@ -3,8 +3,8 @@ import { AuthError, type Session } from '@supabase/supabase-js'
 import { ref } from 'vue'
 
 import { alwaysError } from './error'
+import LockRequestView from './LockRequestView.vue'
 import LoginView from './LoginView.vue'
-import OpenLockView from './OpenLockView.vue'
 import { authClient, withStandardizedError } from './supabase'
 
 interface AuthenticatedState {
@@ -80,7 +80,7 @@ const onLogout = async () => {
     <form @submit.prevent="onLogout">
       <input type="submit" value="Abmelden" />
     </form>
-    <OpenLockView :session="state.session" />
+    <LockRequestView :session="state.session" />
   </template>
 
   <p v-if="state.type === 'errorInitializingState'">
