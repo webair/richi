@@ -15,7 +15,7 @@ const {
   webserviceRequest('api/open-lock', {
     method: 'POST',
     headers: { Authorization: `Bearer ${accessToken}` },
-  }),
+  })
 )
 
 const onRequestOpenLock = async () => {

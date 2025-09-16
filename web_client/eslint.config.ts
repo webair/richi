@@ -26,5 +26,5 @@ export default defineConfigWithVueTs(
 
   pluginVue.configs['flat/recommended'],
   vueTsConfigs.recommended,
-  prettierConfig,
+  prettierConfig
 )

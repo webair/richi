@@ -28,7 +28,7 @@ const onSubmitPhoneNumber = async () => {
       authClient.signInWithOtp({
         phone: inputPhone.value,
         options: { channel: 'sms' },
-      }),
+      })
     )
     state.value = { type: 'verificationCodeState' }
   } catch (e) {
@@ -50,7 +50,7 @@ const onSubmitVerificationCode = async () => {
         token: inputVerificationCode.value,
         phone: inputPhone.value,
         type: 'sms',
-      }),
+      })
     )
   } catch (e) {
     const error = alwaysError(e)

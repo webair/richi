@@ -42,7 +42,7 @@ const check = async () => {
         authClient.getSession() as Promise<
           | { data: { session: Session | null }; error: null }
           | { data: { session: null }; error: AuthError }
-        >, // cast to return type because otherwisee the generic T is not distinct
+        > // cast to return type because otherwisee the generic T is not distinct
     )
 
     if (session) {
@@ -63,7 +63,7 @@ check().then(() =>
     } else {
       state.value = { type: 'unauthenticatedState' }
     }
-  }),
+  })
 )
 
 const onLogout = async () => {

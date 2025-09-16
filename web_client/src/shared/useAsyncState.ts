@@ -21,7 +21,7 @@ interface ErrorState {
 type AsyncState<T> = IdleState | ProcessingState | SuccessState<T> | ErrorState
 
 export const useAsyncState = <T, Args extends unknown[] = []>(
-  asyncFunction: (...args: Args) => Promise<T>,
+  asyncFunction: (...args: Args) => Promise<T>
 ) => {
   const state = ref<AsyncState<T>>({ type: 'idleState' })
 
