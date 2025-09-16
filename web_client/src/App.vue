@@ -61,12 +61,24 @@ check().then(() =>
     }
   }),
 )
+
+const onLogout = async () => {
+  await withStandardizedError(() => authClient.signOut())
+}
 </script>
 
 <template>
   <h1>Richi</h1>
+
   <LoginView v-if="state.type === 'unauthenticatedState'" />
-  <OpenLockView v-if="state.type === 'authenticatedState'" :session="state.session" />
+
+  <template v-if="state.type === 'authenticatedState'">
+    <form @submit.prevent="onLogout">
+      <input type="submit" value="Abmelden" />
+    </form>
+    <OpenLockView :session="state.session" />
+  </template>
+
   <p v-if="state.type === 'authErrorState'">
     Ein Fehler ist aufgetreten, bitte versuch es später nochmal
   </p>

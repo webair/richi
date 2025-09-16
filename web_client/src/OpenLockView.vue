@@ -3,7 +3,6 @@ import type { Session } from '@supabase/supabase-js'
 import { watch } from 'vue'
 
 import { useAsyncState } from './shared/useAsyncState'
-import { authClient, withStandardizedError } from './supabase'
 
 const props = defineProps<{ session: Session }>()
 
@@ -17,10 +16,6 @@ const {
     headers: { Authorization: `Bearer ${accessToken}` },
   })
 })
-
-const onLogout = async () => {
-  await withStandardizedError(() => authClient.signOut())
-}
 
 const onRequestOpenLock = async () => {
   requestOpenLock(props.session.access_token)
@@ -36,10 +31,6 @@ watch(lockRequestState, () => {
 </script>
 
 <template>
-  <form @submit.prevent="onLogout">
-    <input type="submit" value="Abmelden" />
-  </form>
-
   <form
     v-if="lockRequestState.type === 'idle-state' || lockRequestState.type === 'error-state'"
     @submit.prevent="onRequestOpenLock"
