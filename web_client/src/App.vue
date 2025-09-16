@@ -12,12 +12,12 @@ interface AuthenticatedState {
   session: Session
 }
 
-interface InitializingAuthState {
-  type: 'initializingAuthState'
+interface InitializingState {
+  type: 'initializingState'
 }
 
-interface AuthErrorState {
-  type: 'authErrorState'
+interface ErrorInitializingState {
+  type: 'errorInitializingState'
   error: Error
 }
 
@@ -25,10 +25,14 @@ interface UnauthenticatedState {
   type: 'unauthenticatedState'
 }
 
-type AuthStatus = AuthenticatedState | InitializingAuthState | AuthErrorState | UnauthenticatedState
+type AuthenticationState =
+  | AuthenticatedState
+  | InitializingState
+  | ErrorInitializingState
+  | UnauthenticatedState
 
-const state = ref<AuthStatus>({
-  type: 'initializingAuthState',
+const state = ref<AuthenticationState>({
+  type: 'initializingState',
 })
 
 const check = async () => {
@@ -48,7 +52,7 @@ const check = async () => {
     }
   } catch (e: unknown) {
     const error = alwaysError(e)
-    state.value = { type: 'authErrorState', error }
+    state.value = { type: 'errorInitializingState', error }
   }
 }
 
@@ -79,8 +83,8 @@ const onLogout = async () => {
     <OpenLockView :session="state.session" />
   </template>
 
-  <p v-if="state.type === 'authErrorState'">
+  <p v-if="state.type === 'errorInitializingState'">
     Ein Fehler ist aufgetreten, bitte versuch es später nochmal
   </p>
-  <p v-if="state.type === 'initializingAuthState'">Initialisiere die App...</p>
+  <p v-if="state.type === 'initializingState'">Initialisiere die App...</p>
 </template>

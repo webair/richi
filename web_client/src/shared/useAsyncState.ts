@@ -1,20 +1,20 @@
 import { ref } from 'vue'
 
 interface IdleState {
-  type: 'idle-state'
+  type: 'idleState'
 }
 
 interface ProcessingState {
-  type: 'processing-state'
+  type: 'processingState'
 }
 
 interface SuccessState<T> {
-  type: 'success-state'
+  type: 'successState'
   data: T
 }
 
 interface ErrorState {
-  type: 'error-state'
+  type: 'errorState'
   error: Error
 }
 
@@ -23,25 +23,25 @@ type AsyncState<T> = IdleState | ProcessingState | SuccessState<T> | ErrorState
 export const useAsyncState = <T, Args extends unknown[] = []>(
   asyncFunction: (...args: Args) => Promise<T>,
 ) => {
-  const state = ref<AsyncState<T>>({ type: 'idle-state' })
+  const state = ref<AsyncState<T>>({ type: 'idleState' })
 
   const execute = async (...args: Args) => {
-    state.value = { type: 'processing-state' }
+    state.value = { type: 'processingState' }
     try {
       const data = await asyncFunction(...args)
-      state.value = { type: 'success-state', data }
+      state.value = { type: 'successState', data }
     } catch (error) {
       if (error instanceof Error) {
-        state.value = { type: 'error-state', error }
+        state.value = { type: 'errorState', error }
       } else {
-        state.value = { type: 'error-state', error: new Error(`${error}`) }
+        state.value = { type: 'errorState', error: new Error(`${error}`) }
       }
     }
   }
 
   const reset = () => {
-    if (state.value.type !== 'processing-state') {
-      state.value = { type: 'idle-state' }
+    if (state.value.type !== 'processingState') {
+      state.value = { type: 'idleState' }
     }
   }
 

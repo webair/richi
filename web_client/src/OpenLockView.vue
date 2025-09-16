@@ -22,7 +22,7 @@ const onRequestOpenLock = async () => {
 }
 
 watch(lockRequestState, () => {
-  if (lockRequestState.value.type === 'success-state') {
+  if (lockRequestState.value.type === 'successState') {
     setTimeout(() => {
       resetLockRequest()
     }, 5000)
@@ -32,16 +32,16 @@ watch(lockRequestState, () => {
 
 <template>
   <form
-    v-if="lockRequestState.type === 'idle-state' || lockRequestState.type === 'error-state'"
+    v-if="lockRequestState.type === 'idleState' || lockRequestState.type === 'errorState'"
     @submit.prevent="onRequestOpenLock"
   >
-    <p v-if="lockRequestState.type === 'error-state'">
+    <p v-if="lockRequestState.type === 'errorState'">
       Ups da ist etwas schief gelaufen: {{ lockRequestState.error.message }}
     </p>
     <input type="submit" value="Schloss öffnen" />
   </form>
 
-  <p v-if="lockRequestState.type === 'processing-state'">Anfrage zum Öffnen wird gesendet...</p>
+  <p v-if="lockRequestState.type === 'processingState'">Anfrage zum Öffnen wird gesendet...</p>
 
-  <p v-if="lockRequestState.type === 'success-state'">Schloss wird geöffnet.</p>
+  <p v-if="lockRequestState.type === 'successState'">Schloss wird geöffnet.</p>
 </template>
