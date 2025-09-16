@@ -3,6 +3,7 @@ import type { Session } from '@supabase/supabase-js'
 import { watch } from 'vue'
 
 import { useAsyncState } from './shared/useAsyncState'
+import { webserviceRequest } from './shared/webservice-request'
 
 const props = defineProps<{ session: Session }>()
 
@@ -10,12 +11,12 @@ const {
   state: lockRequestState,
   execute: requestOpenLock,
   reset: resetLockRequest,
-} = useAsyncState(async (accessToken: string) => {
-  await fetch('api/open-lock', {
+} = useAsyncState(async (accessToken: string) =>
+  webserviceRequest('api/open-lock', {
     method: 'POST',
     headers: { Authorization: `Bearer ${accessToken}` },
-  })
-})
+  }),
+)
 
 const onRequestOpenLock = async () => {
   requestOpenLock(props.session.access_token)
@@ -29,7 +30,6 @@ watch(lockRequestState, () => {
   }
 })
 </script>
-
 <template>
   <form
     v-if="lockRequestState.type === 'idleState' || lockRequestState.type === 'errorState'"
@@ -43,5 +43,5 @@ watch(lockRequestState, () => {
 
   <p v-if="lockRequestState.type === 'processingState'">Anfrage zum Öffnen wird gesendet...</p>
 
-  <p v-if="lockRequestState.type === 'successState'">Schloss wird geöffnet.</p>
+  <p v-if="lockRequestState.type === 'successState'">{{ lockRequestState.data }}</p>
 </template>
