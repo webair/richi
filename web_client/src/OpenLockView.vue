@@ -1,34 +1,43 @@
 <script lang="ts" setup>
 import type { Session } from '@supabase/supabase-js'
-import { ref } from 'vue'
 
+import { useAsyncState } from './shared/useAsyncState'
 import { authClient, withStandardizedError } from './supabase'
 
 const props = defineProps<{ session: Session }>()
 
-const loggingOut = ref(false)
-const submitting = ref(false)
+const { state: requestOpenLockState, execute: requestOpenLock } = useAsyncState(
+  async (accessToken: string) => {
+    await fetch('api/open-lock', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+  },
+)
 
 const onLogout = async () => {
   await withStandardizedError(() => authClient.signOut())
 }
 
 const onRequestOpenLock = async () => {
-  submitting.value = true
-  await fetch('api/open-lock', {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${props.session.access_token}` },
-  })
-  submitting.value = false
+  requestOpenLock(props.session.access_token)
 }
 </script>
 
 <template>
   <form @submit.prevent="onLogout">
-    <input type="submit" value="Abmelden" :disabled="loggingOut" />
+    <input type="submit" value="Abmelden" />
   </form>
 
-  <form @submit.prevent="onRequestOpenLock">
-    <input type="submit" value="Schloss öffnen" :disabled="submitting" />
+  <form v-if="requestOpenLockState.type === 'idle-state'" @submit.prevent="onRequestOpenLock">
+    <input type="submit" value="Schloss öffnen" />
   </form>
+
+  <p v-if="requestOpenLockState.type === 'processing-state'">Anfrage zum Öffnen wird gesendet...</p>
+
+  <p v-if="requestOpenLockState.type === 'success-state'">Schloss wird geöffnet.</p>
+
+  <p v-if="requestOpenLockState.type === 'error-state'">
+    Ups da ist etwas schief gelaufen: {{ requestOpenLockState.error.message }}
+  </p>
 </template>
