@@ -1,6 +1,7 @@
 use poem_openapi::auth::Bearer;
 use poem_openapi::payload::PlainText;
 use poem_openapi::{ApiResponse, OpenApi, SecurityScheme};
+use tracing::info;
 
 use crate::auth::claim_phone_number;
 use crate::mqtt::{PublishError, publish_open_lock_message};
@@ -51,7 +52,7 @@ impl Api {
         if let Err(e) = publish_open_lock_message().await {
             return e.into();
         }
-        println!("Request to open lock from phone number {}", phone_number);
+        info!("Request to open lock from phone number {}", phone_number);
         OpenLockResponse::Ok(PlainText("Schloss wird geöffnet..."))
     }
 }
