@@ -4,7 +4,7 @@ import { ref } from 'vue'
 
 import { alwaysError } from './error'
 import LoginView from './LoginView.vue'
-import OpenDoorView from './OpenDoorView.vue'
+import OpenLockView from './OpenLockView.vue'
 import { authClient, withStandardizedError } from './supabase'
 
 interface AuthenticatedState {
@@ -66,7 +66,7 @@ check().then(() =>
 <template>
   <h1>Richi</h1>
   <LoginView v-if="state.type === 'unauthenticatedState'" />
-  <OpenDoorView v-if="state.type === 'authenticatedState'" :session="state.session" />
+  <OpenLockView v-if="state.type === 'authenticatedState'" :session="state.session" />
   <p v-if="state.type === 'authErrorState'">
     Ein Fehler ist aufgetreten, bitte versuch es später nochmal
   </p>

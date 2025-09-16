@@ -6,7 +6,7 @@ use crate::auth::claim_phone_number;
 use crate::mqtt::{PublishError, publish_open_lock_message};
 
 #[derive(ApiResponse)]
-enum OpenDoorResponse {
+enum OpenLockResponse {
     #[oai(status = 200)]
     Ok(PlainText<&'static str>),
 
@@ -20,14 +20,14 @@ enum OpenDoorResponse {
     ServiceUnavailable(PlainText<String>),
 }
 
-impl From<PublishError> for OpenDoorResponse {
+impl From<PublishError> for OpenLockResponse {
     fn from(error: PublishError) -> Self {
         match error {
             PublishError::ConnectionError(message) => {
-                OpenDoorResponse::ServiceUnavailable(PlainText(message))
+                OpenLockResponse::ServiceUnavailable(PlainText(message))
             }
             PublishError::ClientError(message) => {
-                OpenDoorResponse::InternalServerError(PlainText(message))
+                OpenLockResponse::InternalServerError(PlainText(message))
             }
         }
     }
@@ -41,17 +41,17 @@ pub struct Api;
 
 #[OpenApi]
 impl Api {
-    #[oai(path = "/open-door", method = "post")]
-    async fn open_door(&self, auth: BearerTokenAuth) -> OpenDoorResponse {
+    #[oai(path = "/open-lock", method = "post")]
+    async fn open_lock(&self, auth: BearerTokenAuth) -> OpenLockResponse {
         let jwt_token = auth.0.token;
         let phone_number = match claim_phone_number(jwt_token).await {
             Ok(phone_number) => phone_number,
-            Err(error) => return OpenDoorResponse::Unauthorized(PlainText(format!("{}", error))),
+            Err(error) => return OpenLockResponse::Unauthorized(PlainText(format!("{}", error))),
         };
         if let Err(e) = publish_open_lock_message().await {
             return e.into();
         }
         println!("Request to open lock from phone number {}", phone_number);
-        OpenDoorResponse::Ok(PlainText("Türe öffne dich..."))
+        OpenLockResponse::Ok(PlainText("Schloss wird geöffnet..."))
     }
 }

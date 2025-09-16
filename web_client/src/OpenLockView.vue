@@ -13,9 +13,9 @@ const onLogout = async () => {
   await withStandardizedError(() => authClient.signOut())
 }
 
-const onRequestOpenDoor = async () => {
+const onRequestOpenLock = async () => {
   submitting.value = true
-  await fetch('api/open-door', {
+  await fetch('api/open-lock', {
     method: 'POST',
     headers: { Authorization: `Bearer ${props.session.access_token}` },
   })
@@ -28,7 +28,7 @@ const onRequestOpenDoor = async () => {
     <input type="submit" value="Abmelden" :disabled="loggingOut" />
   </form>
 
-  <form @submit.prevent="onRequestOpenDoor">
-    <input type="submit" value="Türe öffnen" :disabled="submitting" />
+  <form @submit.prevent="onRequestOpenLock">
+    <input type="submit" value="Schloss öffnen" :disabled="submitting" />
   </form>
 </template>
