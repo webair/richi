@@ -15,7 +15,7 @@ Open the newly created .env file in a text editor and fill in the required value
 docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build --remove-orphans
 ```
 
-## Build and publish docker images to hub.docer.com
+## Build and publish docker images to hub.docker.com
 ```sh
 ./publish.sh
 ```
