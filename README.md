@@ -17,7 +17,7 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build --r
 
 ## Build and publish docker images to hub.docker.com
 ```sh
-./publish.sh
+./ci/publish.sh
 ```
 
 ## Setup Production Environment
@@ -30,11 +30,9 @@ mkdir -p data/caddy_data data/logs
 ```
 
 
-## Update Production Environment
+## Deploy to Production Environment
 ```sh
-docker compose pull
-docker compose up --force-recreate --build -d
-docker image prune -f
+./ci/deploy.sh
 ```
 
 ### TCP Proxy on Raspberry Pi
