@@ -1,5 +1,6 @@
 # mosquitto container
 /mosquitto/config/password_file
 /.env
+/data
 .scratches
 .zed/

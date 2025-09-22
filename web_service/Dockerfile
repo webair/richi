@@ -19,6 +19,7 @@ RUN rustup target add x86_64-unknown-linux-gnu && \
     rustup target add aarch64-unknown-linux-gnu
 
 ARG TARGETARCH
+ARG RUST_APP_NAME=richi_remote_lock_web_service
 
 COPY Cargo.toml Cargo.lock ./
 RUN mkdir -p src && \
@@ -29,7 +30,9 @@ RUN mkdir -p src && \
         *) echo "x86_64-unknown-linux-gnu" ;; \
     esac) && \
     cargo build --release --locked --target ${RUST_TARGET} && \
-    rm -rf src
+    rm -r src && \
+    rm "target/${RUST_TARGET}/release/${RUST_APP_NAME}" && \
+    rm -r "target/${RUST_TARGET}/release/.fingerprint/${RUST_APP_NAME}-"*
 
 COPY src ./src
 RUN export RUST_TARGET=$(case ${TARGETARCH} in \

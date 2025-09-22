@@ -40,12 +40,10 @@ fn init_logging() -> Result<()> {
 }
 
 async fn start_webserver() -> Result<()> {
-    let api_service = OpenApiService::new(api::Api, "Richi Remote Lock Web Service", "1.0")
-        .server(format!("{}/api", config::config().web_service_host));
-    let docs = api_service.swagger_ui();
-    let app = Route::new()
-        .nest("/api", api_service)
-        .nest("api/docs", docs);
+    let api = OpenApiService::new(api::Api, "Richi Remote Lock Web Service", "1.0")
+        .server(format!("{}/api", config::config().url));
+    let docs = api.swagger_ui();
+    let app = Route::new().nest("/api", api).nest("/api/docs", docs);
     Server::new(TcpListener::bind("0.0.0.0:3000"))
         .run(app)
         .await

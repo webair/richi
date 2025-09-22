@@ -5,7 +5,7 @@ use std::sync::OnceLock;
 use anyhow::{Result, anyhow};
 
 pub struct Config {
-    pub web_service_host: String,
+    pub url: String,
     pub mqtt_broker_host: String,
     pub mqtt_broker_username: String,
     pub mqtt_broker_password: String,
@@ -15,7 +15,7 @@ pub struct Config {
 impl Config {
     fn try_new() -> Result<Self> {
         Ok(Self {
-            web_service_host: env_var("WEB_SERVICE_HOST")?,
+            url: env_var("URL")?,
             mqtt_broker_host: env_var("MQTT_BROKER_HOST")?,
             mqtt_broker_username: env_var("MQTT_BROKER_USERNAME")?,
             mqtt_broker_password: env_var("MQTT_BROKER_PASSWORD")?,

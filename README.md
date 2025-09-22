@@ -20,6 +20,23 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build --r
 ./publish.sh
 ```
 
+## Setup Production Environment
+
+- Make sure to copy the docker-compose.yml file to the production server
+- Copy .env.example file to .env and fill in the required values
+- Create the used data folders next to the docker-compose.yml file
+```sh
+mkdir -p data/caddy_data data/logs
+```
+
+
+## Update Production Environment
+```sh
+docker compose pull
+docker compose up --force-recreate --build -d
+docker image prune -f
+```
+
 ### TCP Proxy on Raspberry Pi
 ```sh
 socat TCP4-LISTEN:1883 TCP-CONNECT:<url>:1883
