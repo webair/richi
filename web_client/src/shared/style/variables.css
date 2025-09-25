@@ -1,3 +1,6 @@
 :root {
   --color-text: #333;
+  --color-error: #DD0000;
+
+  --spacing-default: 1rem;
 }

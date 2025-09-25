@@ -100,10 +100,10 @@ const canSubmitVerificationCode = computed(() => {
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--spacing-default);
 
   .error {
-    color: red;
+    color: var(--color-error);
   }
 }
 </style>
