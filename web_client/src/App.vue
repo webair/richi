@@ -11,7 +11,6 @@ import {
 } from './shared/auth'
 
 const { state } = useAuth()
-
 </script>
 
 <template>

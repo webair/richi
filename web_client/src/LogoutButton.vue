@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { authClient, withStandardizedError } from '@/shared/supabase'
+import { useAuthClient } from '@/shared/auth'
 
-const onLogout = async () => {
-  await withStandardizedError(() => authClient.signOut())
-}
+const authClient = useAuthClient()
+
+const onLogout = async () => authClient.logout()
 </script>
 
 <template>

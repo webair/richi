@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 
-import { useAuth } from '@/shared/auth'
+import { useAuthClient } from '@/shared/auth'
 import { alwaysError } from '@/shared/error'
 
 export interface EnterPhoneNumberState {
@@ -28,13 +28,13 @@ export const isEnterVerificationCodeState = (
 }
 
 export const useLogin = () => {
-  const auth = useAuth()
+  const authClient = useAuthClient()
   const state = ref<LoginState>({ type: 'enterPhoneNumberState', submitting: false })
 
   const submitPhoneNumber = async (phoneNumber: string) => {
     state.value = { type: 'enterPhoneNumberState', submitting: true }
     try {
-      await auth.loginWithPhoneNumber(phoneNumber)
+      await authClient.loginWithPhoneNumber(phoneNumber)
       state.value = { type: 'verificationCodeState', submitting: false }
     } catch (e: unknown) {
       const error = alwaysError(e)
@@ -49,7 +49,7 @@ export const useLogin = () => {
   const submitVerificationCode = async (phoneNumber: string, verificationCode: string) => {
     state.value = { type: 'verificationCodeState', submitting: true }
     try {
-      await auth.verifyPhoneNumber(phoneNumber, verificationCode)
+      await authClient.verifyPhoneNumber(phoneNumber, verificationCode)
       state.value = { type: 'verificationCodeState', submitting: false }
     } catch (e) {
       const error = alwaysError(e)

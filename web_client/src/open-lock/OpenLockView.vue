@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { Session } from '@supabase/supabase-js'
 import { watch } from 'vue'
 
 import {
@@ -9,6 +8,7 @@ import {
   isSuccessState,
   useAsyncState,
 } from '@/shared/async-state'
+import type { Session } from '@/shared/auth'
 import { webserviceRequest } from '@/shared/webservice-request'
 
 const props = defineProps<{ session: Session }>()
