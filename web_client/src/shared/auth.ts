@@ -3,7 +3,7 @@ import type { Plugin } from 'vue'
 import { inject, type InjectionKey, type Ref, ref } from 'vue'
 
 import { alwaysError } from '@/shared/error'
-import { authClient, withStandardizedError } from '@/supabase'
+import { authClient, withStandardizedError } from '@/shared/supabase'
 
 interface AuthenticatedState {
   type: 'authenticated'

@@ -8,7 +8,7 @@ import {
   isUnauthenticatedState,
   useAuth,
 } from './shared/auth'
-import { authClient, withStandardizedError } from './supabase'
+import { authClient, withStandardizedError } from './shared/supabase'
 
 const { state } = useAuth()
 
