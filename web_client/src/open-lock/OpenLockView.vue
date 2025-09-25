@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { NAlert, NButton } from 'naive-ui'
 import { watch } from 'vue'
 
 import {
@@ -9,6 +10,7 @@ import {
   useAsyncState,
 } from '@/shared/async-state'
 import type { Session } from '@/shared/auth'
+import UiForm from '@/shared/ui/UiForm.vue'
 import { webserviceRequest } from '@/shared/webservice-request'
 
 const props = defineProps<{ session: Session }>()
@@ -37,15 +39,15 @@ watch(lockRequestState, () => {
 })
 </script>
 <template>
-  <form
+  <UiForm
     v-if="isIdleState(lockRequestState) || isErrorState(lockRequestState)"
     @submit.prevent="onRequestOpenLock"
   >
-    <p v-if="isErrorState(lockRequestState)">
-      Ups da ist etwas schief gelaufen: {{ lockRequestState.error.message }}
-    </p>
-    <input type="submit" value="Schloss öffnen" />
-  </form>
+    <NAlert v-if="isErrorState(lockRequestState)" title="Error" type="error">
+      {{ lockRequestState.error.message }}
+    </NAlert>
+    <NButton type="primary" attr-type="submit" size="large"> Schloss öffnen </NButton>
+  </UiForm>
 
   <p v-if="isProcessingState(lockRequestState)">Anfrage zum Öffnen wird gesendet...</p>
 

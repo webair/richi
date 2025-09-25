@@ -31,6 +31,7 @@ const canSubmitVerificationCode = computed(
     />
     <NButton
       attr-type="submit"
+      type="primary"
       :disabled="!canSubmitVerificationCode"
       :loading="loginState.submitting"
       size="large"

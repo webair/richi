@@ -32,6 +32,7 @@ const canSubmitPhoneNumber = computed(() => {
     />
     <NButton
       attr-type="submit"
+      type="primary"
       :disabled="!canSubmitPhoneNumber"
       :loading="loginState.submitting"
       size="large"

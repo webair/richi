@@ -5,7 +5,6 @@
 <style>
 .ui-form {
   display: flex;
-  align-items: flex-start;
   flex-direction: column;
   gap: var(--spacing-default);
 
