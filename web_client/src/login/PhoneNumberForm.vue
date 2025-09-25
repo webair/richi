@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { NButton, NInput } from 'naive-ui'
 import { computed, defineModel, defineProps } from 'vue'
 
 import UiForm from '@/shared/ui/UiForm.vue'
@@ -20,12 +21,22 @@ const canSubmitPhoneNumber = computed(() => {
   <UiForm>
     <p>Bitte gebe deine Telefonnummer ein</p>
     <p v-if="loginState.error" class="error">{{ loginState.error }}</p>
-    <input
-      v-model="phoneNumberInput"
-      type="tel"
+    <NInput
+      v-model:value="phoneNumberInput"
+      :autofocus="true"
+      type="text"
+      attr-type="tel"
       placeholder="+41791236712"
+      size="large"
       :readonly="loginState.submitting"
     />
-    <input type="submit" value="Anmelden" :disabled="!canSubmitPhoneNumber" />
+    <NButton
+      attr-type="submit"
+      :disabled="!canSubmitPhoneNumber"
+      :loading="loginState.submitting"
+      size="large"
+    >
+      Anmelden
+    </NButton>
   </UiForm>
 </template>
