@@ -2,7 +2,7 @@ import type { AuthError, Session } from '@supabase/supabase-js'
 import type { Plugin } from 'vue'
 import { inject, type InjectionKey, type Ref, ref } from 'vue'
 
-import { alwaysError } from '@/error'
+import { alwaysError } from '@/shared/error'
 import { authClient, withStandardizedError } from '@/supabase'
 
 interface AuthenticatedState {
@@ -49,6 +49,8 @@ export const isUnauthenticatedState = (authState: AuthState): authState is Unaut
 
 interface Auth {
   state: Ref<AuthState>
+  loginWithPhoneNumber: (phoneNumber: string) => Promise<void>
+  verifyPhoneNumber: (phoneNumber: string, verificationCode: string) => Promise<void>
 }
 
 const createAuth = (): Auth => {
@@ -89,8 +91,30 @@ const createAuth = (): Auth => {
       }
     })
   )
+
+  const loginWithPhoneNumber = async (phoneNumber: string) => {
+    await withStandardizedError(() =>
+      authClient.signInWithOtp({
+        phone: phoneNumber,
+        options: { channel: 'sms' },
+      })
+    )
+  }
+
+  const verifyPhoneNumber = async (phoneNumber: string, verificationCode: string) => {
+    await withStandardizedError(() =>
+      authClient.verifyOtp({
+        token: verificationCode,
+        phone: phoneNumber,
+        type: 'sms',
+      })
+    )
+  }
+
   return {
     state,
+    loginWithPhoneNumber,
+    verifyPhoneNumber,
   }
 }
 

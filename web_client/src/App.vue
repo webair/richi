@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import LockRequestView from './LockRequestView.vue'
-import LoginView from './LoginView.vue'
+import LoginView from './login/LoginView.vue'
 import {
   isAuthenticatedState,
   isErrorInitializingState,
