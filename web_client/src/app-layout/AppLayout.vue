@@ -1,5 +1,10 @@
+<script lang="ts" setup>
+import AppHeader from './AppHeader.vue'
+</script>
+
 <template>
   <div class="app-layout">
+    <AppHeader />
     <slot />
   </div>
 </template>

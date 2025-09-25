@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import AppLayout from './AppLayout.vue'
+import AppLayout from './app-layout/AppLayout.vue'
 import LoginView from './login/LoginView.vue'
-import LogoutButton from './LogoutButton.vue'
-import LockRequestView from './open-lock/OpenLockView.vue'
+import OpenLockView from './open-lock/OpenLockView.vue'
 import {
   isAuthenticatedState,
   isErrorInitializingState,
@@ -16,13 +15,10 @@ const { state } = useAuth()
 
 <template>
   <AppLayout>
-    <h1>Richi</h1>
-
     <LoginView v-if="isUnauthenticatedState(state)" />
 
     <template v-if="isAuthenticatedState(state)">
-      <LogoutButton />
-      <LockRequestView :session="state.session" />
+      <OpenLockView :session="state.session" />
     </template>
 
     <p v-if="isErrorInitializingState(state)">
