@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppLayout from './AppLayout.vue'
 import LoginView from './login/LoginView.vue'
 import LogoutButton from './LogoutButton.vue'
 import LockRequestView from './open-lock/OpenLockView.vue'
@@ -14,17 +15,19 @@ const { state } = useAuth()
 </script>
 
 <template>
-  <h1>Richi</h1>
+  <AppLayout>
+    <h1>Richi</h1>
 
-  <LoginView v-if="isUnauthenticatedState(state)" />
+    <LoginView v-if="isUnauthenticatedState(state)" />
 
-  <template v-if="isAuthenticatedState(state)">
-    <LogoutButton />
-    <LockRequestView :session="state.session" />
-  </template>
+    <template v-if="isAuthenticatedState(state)">
+      <LogoutButton />
+      <LockRequestView :session="state.session" />
+    </template>
 
-  <p v-if="isErrorInitializingState(state)">
-    Ein Fehler ist aufgetreten, bitte versuch es später nochmal
-  </p>
-  <p v-if="isInitializingState(state)">Initialisiere die App...</p>
+    <p v-if="isErrorInitializingState(state)">
+      Ein Fehler ist aufgetreten, bitte versuch es später nochmal
+    </p>
+    <p v-if="isInitializingState(state)">Initialisiere die App...</p>
+  </AppLayout>
 </template>
