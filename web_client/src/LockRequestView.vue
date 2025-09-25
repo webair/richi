@@ -2,7 +2,13 @@
 import type { Session } from '@supabase/supabase-js'
 import { watch } from 'vue'
 
-import { useAsyncState } from './shared/useAsyncState'
+import {
+  isErrorState,
+  isIdleState,
+  isProcessingState,
+  isSuccessState,
+  useAsyncState,
+} from './shared/async-state'
 import { webserviceRequest } from './shared/webservice-request'
 
 const props = defineProps<{ session: Session }>()
@@ -23,7 +29,7 @@ const onRequestOpenLock = async () => {
 }
 
 watch(lockRequestState, () => {
-  if (lockRequestState.value.type === 'successState') {
+  if (isSuccessState(lockRequestState.value)) {
     setTimeout(() => {
       resetLockRequest()
     }, 5000)
@@ -32,16 +38,16 @@ watch(lockRequestState, () => {
 </script>
 <template>
   <form
-    v-if="lockRequestState.type === 'idleState' || lockRequestState.type === 'errorState'"
+    v-if="isIdleState(lockRequestState) || isErrorState(lockRequestState)"
     @submit.prevent="onRequestOpenLock"
   >
-    <p v-if="lockRequestState.type === 'errorState'">
+    <p v-if="isErrorState(lockRequestState)">
       Ups da ist etwas schief gelaufen: {{ lockRequestState.error.message }}
     </p>
     <input type="submit" value="Schloss öffnen" />
   </form>
 
-  <p v-if="lockRequestState.type === 'processingState'">Anfrage zum Öffnen wird gesendet...</p>
+  <p v-if="isProcessingState(lockRequestState)">Anfrage zum Öffnen wird gesendet...</p>
 
-  <p v-if="lockRequestState.type === 'successState'">{{ lockRequestState.data }}</p>
+  <p v-if="isSuccessState(lockRequestState)">{{ lockRequestState.data }}</p>
 </template>
