@@ -8,8 +8,8 @@ import {
   isProcessingState,
   isSuccessState,
   useAsyncState,
-} from './shared/async-state'
-import { webserviceRequest } from './shared/webservice-request'
+} from '@/shared/async-state'
+import { webserviceRequest } from '@/shared/webservice-request'
 
 const props = defineProps<{ session: Session }>()
 
