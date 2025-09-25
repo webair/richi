@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { NButton, NInput } from 'naive-ui'
 import { computed, defineModel, defineProps } from 'vue'
 
 import UiForm from '@/shared/ui/UiForm.vue'
@@ -11,21 +12,30 @@ const { loginState } = defineProps<{
 
 const verificationCodeInput = defineModel<string>({ default: '' })
 
-const canSubmitVerificationCode = computed(() => {
-  return verificationCodeInput.value.length === 6 && !loginState.submitting
-})
+const canSubmitVerificationCode = computed(
+  () => verificationCodeInput.value.length === 6 && !loginState.submitting
+)
 </script>
 
 <template>
   <UiForm>
     <p>Bitte gib den 6-stelligen Code aus der SMS ein</p>
     <p v-if="loginState.error" class="error">{{ loginState.error }}</p>
-    <input
-      v-model="verificationCodeInput"
-      type="tel"
+    <NInput
+      v-model:value="verificationCodeInput"
+      type="text"
+      attr-type="tel"
       placeholder="123456"
+      size="large"
       :readonly="loginState.submitting"
     />
-    <input type="submit" value="Telefonummer verifizieren" :disabled="!canSubmitVerificationCode" />
+    <NButton
+      attr-type="submit"
+      :disabled="!canSubmitVerificationCode"
+      :loading="loginState.submitting"
+      size="large"
+    >
+      Telefonummer verifizieren
+    </NButton>
   </UiForm>
 </template>
