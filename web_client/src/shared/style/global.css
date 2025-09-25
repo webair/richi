@@ -1,0 +1,11 @@
+@import './browser-reset.css';
+@import './variables.css';
+
+html {
+  font-family: Arial, sans-serif;
+  color: var(--color-text)
+}
+
+body {
+  font-size: 1.4rem;
+}

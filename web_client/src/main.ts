@@ -1,4 +1,4 @@
-import './shared/browser-reset.css'
+import './shared/style/global.css'
 
 import { createApp } from 'vue'
 
