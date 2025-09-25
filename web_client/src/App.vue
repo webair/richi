@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import LoginView from './login/LoginView.vue'
+import LogoutButton from './LogoutButton.vue'
 import LockRequestView from './open-lock/OpenLockView.vue'
 import {
   isAuthenticatedState,
@@ -8,13 +9,9 @@ import {
   isUnauthenticatedState,
   useAuth,
 } from './shared/auth'
-import { authClient, withStandardizedError } from './shared/supabase'
 
 const { state } = useAuth()
 
-const onLogout = async () => {
-  await withStandardizedError(() => authClient.signOut())
-}
 </script>
 
 <template>
@@ -23,9 +20,7 @@ const onLogout = async () => {
   <LoginView v-if="isUnauthenticatedState(state)" />
 
   <template v-if="isAuthenticatedState(state)">
-    <form @submit.prevent="onLogout">
-      <input type="submit" value="Abmelden" />
-    </form>
+    <LogoutButton />
     <LockRequestView :session="state.session" />
   </template>
 
