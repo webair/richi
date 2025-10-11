@@ -5,6 +5,7 @@ services:
     networks:
       - richi-network
     environment:
+      JWKS_URL: ${JWKS_URL}
       URL: ${URL}
       WEB_SERVICE_URL: web-service:3000
       WEB_CLIENT_URL: web-client:80

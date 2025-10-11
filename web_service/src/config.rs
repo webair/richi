@@ -10,6 +10,7 @@ pub struct Config {
     pub mqtt_broker_username: String,
     pub mqtt_broker_password: String,
     pub nuki_lock_id: String,
+    pub jwks_url: String,
 }
 
 impl Config {
@@ -20,6 +21,7 @@ impl Config {
             mqtt_broker_username: env_var("MQTT_BROKER_USERNAME")?,
             mqtt_broker_password: env_var("MQTT_BROKER_PASSWORD")?,
             nuki_lock_id: env_var("NUKI_LOCK_ID")?,
+            jwks_url: env_var("JWKS_URL")?,
         })
     }
 }

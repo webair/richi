@@ -3,7 +3,7 @@ use jsonwebtoken::{TokenData, Validation, decode, decode_header};
 use jwks::Jwks;
 use serde::{Deserialize, Serialize};
 
-static JWKS_URL: &str = "https://kaiupgcdozjalfocsddp.supabase.co/auth/v1/.well-known/jwks.json";
+use crate::config;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Claims {
@@ -16,7 +16,7 @@ pub async fn claim_phone_number(jwt_token: String) -> Result<String> {
     let kid = header
         .kid
         .ok_or(anyhow!("Could not read kid from jwt header"))?;
-    let jwks = Jwks::from_jwks_url(JWKS_URL).await?;
+    let jwks = Jwks::from_jwks_url(&config::config().jwks_url).await?;
     let jwk = jwks
         .keys
         .get(&kid)
