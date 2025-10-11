@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import type { InputInst } from 'naive-ui'
 import { NButton, NInput } from 'naive-ui'
-import { computed, defineModel, defineProps } from 'vue'
+import { computed, defineModel, defineProps, onMounted, ref } from 'vue'
 
 import UiForm from '@/shared/ui/UiForm.vue'
 
@@ -10,10 +11,13 @@ const { loginState } = defineProps<{
   loginState: EnterPhoneNumberState
 }>()
 
-const phoneNumberInput = defineModel<string>({ default: '' })
+const inputValue = defineModel<string>({ default: '' })
+const inputRef = ref<InputInst>()
 
-const canSubmitPhoneNumber = computed(() => {
-  return phoneNumberInput.value.length === 12 && !loginState.submitting
+const canSubmit = computed(() => inputValue.value.length === 12 && !loginState.submitting)
+
+onMounted(() => {
+  inputRef.value?.focus()
 })
 </script>
 
@@ -22,7 +26,8 @@ const canSubmitPhoneNumber = computed(() => {
     <p>Bitte gebe deine Telefonnummer ein</p>
     <p v-if="loginState.error" class="error">{{ loginState.error }}</p>
     <NInput
-      v-model:value="phoneNumberInput"
+      ref="inputRef"
+      v-model:value="inputValue"
       :autofocus="true"
       type="text"
       attr-type="tel"
@@ -33,7 +38,7 @@ const canSubmitPhoneNumber = computed(() => {
     <NButton
       attr-type="submit"
       type="primary"
-      :disabled="!canSubmitPhoneNumber"
+      :disabled="!canSubmit"
       :loading="loginState.submitting"
       size="large"
     >

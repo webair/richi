@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import type { InputInst } from 'naive-ui'
 import { NButton, NInput } from 'naive-ui'
-import { computed, defineModel, defineProps } from 'vue'
+import { computed, defineModel, defineProps, onMounted, ref } from 'vue'
 
 import UiForm from '@/shared/ui/UiForm.vue'
 
@@ -10,11 +11,14 @@ const { loginState } = defineProps<{
   loginState: EnterVerificationCodeState
 }>()
 
-const verificationCodeInput = defineModel<string>({ default: '' })
+const inputValue = defineModel<string>({ default: '' })
+const inputRef = ref<InputInst>()
 
-const canSubmitVerificationCode = computed(
-  () => verificationCodeInput.value.length === 6 && !loginState.submitting
-)
+const canSubmit = computed(() => inputValue.value.length === 6 && !loginState.submitting)
+
+onMounted(() => {
+  inputRef.value?.focus()
+})
 </script>
 
 <template>
@@ -22,9 +26,11 @@ const canSubmitVerificationCode = computed(
     <p>Bitte gib den 6-stelligen Code aus der SMS ein</p>
     <p v-if="loginState.error" class="error">{{ loginState.error }}</p>
     <NInput
-      v-model:value="verificationCodeInput"
+      ref="inputRef"
+      v-model:value="inputValue"
+      :autosize="true"
       type="text"
-      attr-type="tel"
+      attr-type="number"
       placeholder="123456"
       size="large"
       :readonly="loginState.submitting"
@@ -32,7 +38,7 @@ const canSubmitVerificationCode = computed(
     <NButton
       attr-type="submit"
       type="primary"
-      :disabled="!canSubmitVerificationCode"
+      :disabled="!canSubmit"
       :loading="loginState.submitting"
       size="large"
     >
