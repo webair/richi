@@ -1,30 +1,14 @@
 use rumqttc::Event::Incoming;
-use rumqttc::{AsyncClient, ClientError, ConnectionError, MqttOptions, Packet, QoS};
+use rumqttc::{AsyncClient, MqttOptions, Packet, QoS};
 use std::time::Duration;
 
 use crate::config;
+use crate::error::Result;
 
 const LOCK_ACTION_TOPIC: &str = "lockAction";
 const LOCK_ACTION_UNLOCK: &str = "1";
 
-pub enum PublishError {
-    ConnectionError(String),
-    ClientError(String),
-}
-
-impl From<ClientError> for PublishError {
-    fn from(client_error: ClientError) -> PublishError {
-        PublishError::ClientError(client_error.to_string())
-    }
-}
-
-impl From<ConnectionError> for PublishError {
-    fn from(connection_error: ConnectionError) -> PublishError {
-        PublishError::ConnectionError(connection_error.to_string())
-    }
-}
-
-pub async fn publish_open_lock_message() -> Result<(), PublishError> {
+pub async fn publish_open_lock_message() -> Result<()> {
     let mut mqtt_options = MqttOptions::new("", &config::config().mqtt_broker_host, 1883);
     mqtt_options.set_keep_alive(Duration::from_secs(5));
     mqtt_options.set_credentials(

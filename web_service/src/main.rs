@@ -1,6 +1,7 @@
 mod api;
 mod auth;
 mod config;
+mod error;
 mod mqtt;
 
 use anyhow::{Error, Result};

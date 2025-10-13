@@ -4,7 +4,8 @@ use poem_openapi::{ApiResponse, OpenApi, SecurityScheme};
 use tracing::info;
 
 use crate::auth::claim_phone_number;
-use crate::mqtt::{PublishError, publish_open_lock_message};
+use crate::error::Error;
+use crate::mqtt::publish_open_lock_message;
 
 #[derive(ApiResponse)]
 enum OpenLockResponse {
@@ -21,15 +22,16 @@ enum OpenLockResponse {
     ServiceUnavailable(PlainText<String>),
 }
 
-impl From<PublishError> for OpenLockResponse {
-    fn from(error: PublishError) -> Self {
-        match error {
-            PublishError::ConnectionError(message) => {
-                OpenLockResponse::ServiceUnavailable(PlainText(message))
+impl From<Error> for OpenLockResponse {
+    fn from(e: Error) -> Self {
+        match e {
+            Error::MqttConnection(_) => {
+                OpenLockResponse::ServiceUnavailable(PlainText(format!("{}", e)))
             }
-            PublishError::ClientError(message) => {
-                OpenLockResponse::InternalServerError(PlainText(message))
+            Error::MqttClient(_) | Error::Jwks(_) | Error::Unexpected => {
+                OpenLockResponse::InternalServerError(PlainText(format!("{}", e)))
             }
+            Error::Jwt(_) => OpenLockResponse::Unauthorized(PlainText("Unauthorized".to_string())),
         }
     }
 }
