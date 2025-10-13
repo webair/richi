@@ -1,7 +1,7 @@
 use poem_openapi::auth::Bearer;
 use poem_openapi::payload::PlainText;
 use poem_openapi::{ApiResponse, OpenApi, SecurityScheme};
-use tracing::info;
+use tracing::{error, info};
 
 use crate::auth::extract_phone_number_from_jwt;
 use crate::error::Error;
@@ -49,9 +49,13 @@ impl Api {
         let jwt_token = auth.0.token;
         let phone_number = match extract_phone_number_from_jwt(jwt_token).await {
             Ok(phone_number) => phone_number,
-            Err(error) => return OpenLockResponse::Unauthorized(PlainText(format!("{}", error))),
+            Err(e) => {
+                error!("{:?}", e);
+                return e.into();
+            }
         };
         if let Err(e) = publish_open_lock_message().await {
+            error!("{}", e);
             return e.into();
         }
         info!("Request to open lock from phone number {}", phone_number);
