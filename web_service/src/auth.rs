@@ -11,7 +11,7 @@ pub struct Claims {
     pub phone: String,
 }
 
-pub async fn claim_phone_number(jwt_token: String) -> Result<String> {
+pub async fn extract_phone_number_from_jwt(jwt_token: String) -> Result<String> {
     let header = decode_header(&jwt_token)?;
     let kid = header.kid.ok_or(Error::Unexpected)?;
     let jwks = Jwks::from_jwks_url(&config::config().jwks_url).await?;

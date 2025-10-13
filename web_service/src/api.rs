@@ -3,7 +3,7 @@ use poem_openapi::payload::PlainText;
 use poem_openapi::{ApiResponse, OpenApi, SecurityScheme};
 use tracing::info;
 
-use crate::auth::claim_phone_number;
+use crate::auth::extract_phone_number_from_jwt;
 use crate::error::Error;
 use crate::mqtt::publish_open_lock_message;
 
@@ -47,7 +47,7 @@ impl Api {
     #[oai(path = "/open-lock", method = "post")]
     async fn open_lock(&self, auth: BearerTokenAuth) -> OpenLockResponse {
         let jwt_token = auth.0.token;
-        let phone_number = match claim_phone_number(jwt_token).await {
+        let phone_number = match extract_phone_number_from_jwt(jwt_token).await {
             Ok(phone_number) => phone_number,
             Err(error) => return OpenLockResponse::Unauthorized(PlainText(format!("{}", error))),
         };
