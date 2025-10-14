@@ -3,6 +3,7 @@ use jwks::Jwks;
 use serde::{Deserialize, Serialize};
 use std::sync::LazyLock;
 use tokio::sync::RwLock;
+use tracing::debug;
 
 use crate::config;
 use crate::error::{Error, Result};
@@ -16,10 +17,16 @@ pub struct Claims {
 static CASHED_JWKS: LazyLock<RwLock<Option<Jwks>>> = LazyLock::new(|| RwLock::new(None));
 
 pub async fn extract_phone_number_from_jwt(jwt_token: String) -> Result<String> {
-    let jwks = get_jwks().await?;
+    let mut jwks = get_jwks().await?;
     let header = decode_header(&jwt_token)?;
     let kid = header.kid.ok_or(Error::Unexpected)?;
-    let jwk = jwks.keys.get(&kid).ok_or(Error::Unexpected)?;
+    let jwk = match jwks.keys.get(&kid) {
+        Some(jwk) => jwk,
+        None => {
+            jwks = update_and_get_jwks().await?;
+            jwks.keys.get(&kid).ok_or(Error::Unexpected)?
+        }
+    };
     let mut validation = Validation::new(header.alg);
     validation.set_audience(&["authenticated"]);
     let decoded_token: TokenData<Claims> = decode(&jwt_token, &jwk.decoding_key, &validation)?;
@@ -38,6 +45,7 @@ async fn get_cached_jwks() -> Option<Jwks> {
 }
 
 async fn update_and_get_jwks() -> Result<Jwks> {
+    debug!("Fetching remote jwks");
     let jwks = Jwks::from_jwks_url(&config::config().jwks_url).await?;
     let mut jwks_write = CASHED_JWKS.write().await;
     *jwks_write = Some(jwks.clone());
