@@ -10,6 +10,7 @@ use poem::{Route, Server};
 use poem_openapi::OpenApiService;
 use tracing::Level;
 use tracing_appender::rolling::{RollingFileAppender, Rotation};
+use tracing_subscriber::fmt::time::LocalTime;
 use tracing_subscriber::fmt::writer::MakeWriterExt;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
@@ -35,6 +36,7 @@ fn init_logging() -> Result<()> {
                 .with_ansi(false)
                 .with_target(false)
                 .with_level(false)
+                .with_timer(LocalTime::rfc_3339())
                 .with_writer(
                     file_appender
                         .with_min_level(Level::INFO)
