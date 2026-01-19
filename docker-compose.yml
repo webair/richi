@@ -36,7 +36,7 @@ services:
       MQTT_BROKER_HOST: mqtt-broker
       MQTT_BROKER_USERNAME: ${MQTT_BROKER_USERNAME}
       MQTT_BROKER_PASSWORD: ${MQTT_BROKER_PASSWORD}
-      NUKI_LOCK_ID: ${NUKI_LOCK_ID}
+      NUKI_LOCK_IDS: ${NUKI_LOCK_IDS}
       URL: ${URL}
       TZ: Europe/Zurich
     user: "${UID}:${GID}"

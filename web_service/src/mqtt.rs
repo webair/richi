@@ -16,22 +16,22 @@ pub async fn publish_open_lock_message() -> Result<()> {
         &config::config().mqtt_broker_password,
     );
     let (client, mut event_loop) = AsyncClient::new(mqtt_options, 10);
-    client
-        .publish(
-            format!(
-                "nuki/{}/{}",
-                config::config().nuki_lock_id,
-                LOCK_ACTION_TOPIC
-            ),
-            QoS::ExactlyOnce,
-            false,
-            LOCK_ACTION_UNLOCK,
-        )
-        .await?;
 
-    loop {
+    for nuki_lock_id in &config::config().nuki_lock_ids {
+        client
+            .publish(
+                format!("nuki/{}/{}", nuki_lock_id, LOCK_ACTION_TOPIC),
+                QoS::ExactlyOnce,
+                false,
+                LOCK_ACTION_UNLOCK,
+            )
+            .await?;
+    }
+
+    let mut num_pub_comp = 0;
+    while num_pub_comp < 2 {
         if let Incoming(Packet::PubComp(_)) = event_loop.poll().await? {
-            break;
+            num_pub_comp += 1;
         }
     }
     Ok(())

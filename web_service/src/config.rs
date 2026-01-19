@@ -9,18 +9,22 @@ pub struct Config {
     pub mqtt_broker_host: String,
     pub mqtt_broker_username: String,
     pub mqtt_broker_password: String,
-    pub nuki_lock_id: String,
+    pub nuki_lock_ids: Vec<String>,
     pub jwks_url: String,
 }
 
 impl Config {
     fn try_new() -> Result<Self> {
+        let nuki_lock_ids = env_var("NUKI_LOCK_IDS")?
+            .split(",")
+            .map(|id| id.to_string())
+            .collect();
         Ok(Self {
             url: env_var("URL")?,
             mqtt_broker_host: env_var("MQTT_BROKER_HOST")?,
             mqtt_broker_username: env_var("MQTT_BROKER_USERNAME")?,
             mqtt_broker_password: env_var("MQTT_BROKER_PASSWORD")?,
-            nuki_lock_id: env_var("NUKI_LOCK_ID")?,
+            nuki_lock_ids,
             jwks_url: env_var("JWKS_URL")?,
         })
     }
