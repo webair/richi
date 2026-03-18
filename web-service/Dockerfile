@@ -41,7 +41,7 @@ RUN export RUST_TARGET=$(case ${TARGETARCH} in \
         *) echo "x86_64-unknown-linux-gnu" ;; \
     esac) && \
     cargo build --release --locked --target ${RUST_TARGET} && \
-    ln -s "/app/target/${RUST_TARGET}/release/richi_remote_lock_web_service" "richi_remote_lock_web_service-${TARGETARCH}" && \
+    ln -s "/app/target/${RUST_TARGET}/release/${RUST_APP_NAME}" "${RUST_APP_NAME}-${TARGETARCH}" && \
     echo "Build Richi Remote Lock Web Service for target: ${RUST_TARGET}"
 
 
@@ -52,10 +52,11 @@ ENV MQTT_BROKER_HOST="<mqtt broker host>"
 ENV MQTT_BROKER_USERNAME="<mqtt broker username>"
 ENV MQTT_BROKER_PASSWORD="<mqtt broker password>"
 ARG TARGETARCH
+ARG RUST_APP_NAME
 
 WORKDIR /app
 
-COPY --from=builder "/app/richi-lock-web-service-${TARGETARCH}" richi-lock-web-service
+COPY --from=builder "/app/${RUST_APP_NAME}-${TARGETARCH}" "${RUST_APP_NAME}"
 
 EXPOSE 3000
 
