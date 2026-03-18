@@ -59,4 +59,4 @@ COPY --from=builder "/app/richi-lock-web-service-${TARGETARCH}" "richi-lock-web-
 
 EXPOSE 3000
 
-CMD ["./richi_lock_web_service"]
+CMD ["./richi-lock-web-service"]
