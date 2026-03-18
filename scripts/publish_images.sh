@@ -8,10 +8,10 @@ DOCKER_USERNAME=webair
 
 main() {
     docker login
-    build_and_push_image "./mqtt_broker" "richi-remote-lock-mqtt-broker"
-    build_and_push_image "./reverse_proxy" "richi-remote-lock-reverse-proxy"
-    build_and_push_image "./web_service" "richi-remote-lock-web-service"
-    build_and_push_image "./web_client" "richi-remote-lock-web-client"
+    build_and_push_image "./mqtt-broker" "richi-remote-lock-mqtt-broker"
+    build_and_push_image "./reverse-proxy" "richi-remote-lock-reverse-proxy"
+    build_and_push_image "./web-service" "richi-remote-lock-web-service"
+    build_and_push_image "./web-client" "richi-remote-lock-web-client"
 }
 
 build_and_push_image() {

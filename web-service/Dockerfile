@@ -19,7 +19,7 @@ RUN rustup target add x86_64-unknown-linux-gnu && \
     rustup target add aarch64-unknown-linux-gnu
 
 ARG TARGETARCH
-ARG RUST_APP_NAME=richi_remote_lock_web_service
+ARG RUST_APP_NAME=richi-lock-web-service
 
 COPY Cargo.toml Cargo.lock ./
 RUN mkdir -p src && \
@@ -55,7 +55,7 @@ ARG TARGETARCH
 
 WORKDIR /app
 
-COPY --from=builder "/app/richi_remote_lock_web_service-${TARGETARCH}" richi_remote_lock_web_service
+COPY --from=builder "/app/richi-lock-web-service-${TARGETARCH}" richi-lock-web-service
 
 EXPOSE 3000
 

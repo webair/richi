@@ -1,13 +1,13 @@
 services:
   revers-proxy:
-    build: ./reverse_proxy
+    build: ./reverse-proxy
     restart: no
   mqtt-broker:
-    build: ./mqtt_broker
+    build: ./mqtt-broker
     restart: no
   web-service:
-    build: ./web_service
+    build: ./web-service
     restart: no
   web-client:
-    build: ./web_client
+    build: ./web-client
     restart: no
