@@ -1341,7 +1341,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "richi_remote_lock_web_service"
+name = "richi-lock-web-service"
 version = "0.1.0"
 dependencies = [
  "anyhow",
