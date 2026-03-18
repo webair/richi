@@ -52,12 +52,11 @@ ENV MQTT_BROKER_HOST="<mqtt broker host>"
 ENV MQTT_BROKER_USERNAME="<mqtt broker username>"
 ENV MQTT_BROKER_PASSWORD="<mqtt broker password>"
 ARG TARGETARCH
-ARG RUST_APP_NAME
 
 WORKDIR /app
 
-COPY --from=builder "/app/${RUST_APP_NAME}-${TARGETARCH}" "${RUST_APP_NAME}"
+COPY --from=builder "/app/richi-lock-web-service-${TARGETARCH}" "richi-lock-web-service"
 
 EXPOSE 3000
 
-CMD ["./richi_remote_lock_web_service"]
+CMD ["./richi_lock_web_service"]
